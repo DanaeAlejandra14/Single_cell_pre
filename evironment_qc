@@ -1,0 +1,36 @@
+name: scqc-r43
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  # Núcleo R (Bioconductor 3.18)
+  - r-base=4.3.3
+
+  # CRAN vía conda-forge
+  - r-seurat=5.*
+  - r-tidyverse
+  - r-matrix
+  - r-jsonlite
+  - r-readr
+  - r-patchwork
+  - r-scales
+
+  # Bioconductor compatibles con R 4.3 (Bioc 3.18)
+  - bioconductor-biocgenerics
+  - bioconductor-s4vectors
+  - bioconductor-iranges
+  - bioconductor-matrixgenerics
+  - bioconductor-summarizedexperiment
+  - bioconductor-delayedarray
+  - bioconductor-sparsearray
+  - bioconductor-s4arrays
+  - bioconductor-singlecellexperiment
+  - bioconductor-scuttle
+  - bioconductor-scdblfinder
+  - bioconductor-scran
+  - bioconductor-scater
+
+
+  # BLAS OpenBLAS para performance
+  - libblas=*=*openblas
