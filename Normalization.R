@@ -1,8 +1,3 @@
-#Normalization
-
-# Input: seurat_list_filtered : Just the qc 
-# Output : seurat_list_normalized : Before the normalization
-
 #!/usr/bin/env Rscript
 
 set.seed(123)
@@ -16,28 +11,27 @@ if (length(args) < 1) {
 input_path <- args[1]
 stopifnot(file.exists(input_path))
 
-# Load required packages
+# Load required libraries
 suppressPackageStartupMessages({
   library(Seurat)
   library(tidyverse)
   library(SingleCellExperiment)
   library(scran)
-  library(BiocParallel)
 })
 
 message("# Loaded packages")
 
-# Load input Seurat object or list of Seurat objects
+# Load input object
 x <- readRDS(input_path)
 message("# Loaded input: ", input_path)
 message("# Class: ", paste(class(x), collapse = ", "))
 
-# Normalize to a named list
+# Normalize to list
 if (inherits(x, "Seurat")) {
   seurat_list <- list(x)
   nm <- if ("sample_id" %in% colnames(x@meta.data)) unique(x$sample_id)[1] else "sample1"
   names(seurat_list) <- nm
-} else if (is.list(x) && all(vapply(x, \(z) inherits(z, "Seurat"), logical(1)))) {
+} else if (is.list(x) && all(vapply(x, function(z) inherits(z, "Seurat"), logical(1)))) {
   seurat_list <- x
   if (is.null(names(seurat_list))) names(seurat_list) <- paste0("sample", seq_along(seurat_list))
 } else {
@@ -54,44 +48,90 @@ outdir <- file.path("normalized_out", paste0(base, "-", stamp))
 dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
 message("# Output directory: ", outdir)
 
-# Function to normalize a Seurat object using scran
+# Helper to get counts safely (Seurat v5-compatible)
+get_counts_safe <- function(obj, assay = "RNA") {
+  a <- obj[[assay]]
+  if (!is.null(a@layers) && "counts" %in% names(a@layers)) {
+    return(GetAssayData(obj, assay = assay, layer = "counts"))
+  } else {
+    return(GetAssayData(obj, assay = assay, slot = "counts"))
+  }
+}
+
+# Normalization function
 normalize_with_scran <- function(obj, sample_name) {
   message("  >> Normalizing sample: ", sample_name)
   
+  DefaultAssay(obj) <- "RNA"
+  
+  raw_counts <- tryCatch({
+    get_counts_safe(obj)
+  }, error = function(e) {
+    message("    ! Failed to extract counts: ", e$message)
+    return(NULL)
+  })
+  
+  if (is.null(raw_counts)) {
+    message("    ! Skipping ", sample_name, ": no counts matrix.")
+    return(NULL)
+  }
+  
   # Convert to SingleCellExperiment
   sce <- tryCatch({
-    as.SingleCellExperiment(obj, assay = "RNA")
+    SingleCellExperiment(assays = list(counts = raw_counts))
   }, error = function(e) {
-    message("    ! Error converting to SCE: ", e$message)
+    message("    ! Failed to convert to SCE: ", e$message)
     return(NULL)
   })
+  if (is.null(sce)) return(NULL)
   
-  # Compute size factors using scran
+  # Compute size factors
   sce <- tryCatch({
-    computeSumFactors(sce, min.mean = 0.1, BPPARAM = MulticoreParam())
+    computeSumFactors(sce, min.mean = 0.1)
   }, error = function(e) {
-    message("    ! Error in computeSumFactors: ", e$message)
+    message("    ! Failed to compute size factors: ", e$message)
     return(NULL)
   })
   
-  # Extract size factors
-  size_factors <- sizeFactors(sce)
-  obj$size_factors <- size_factors
+  sf <- sizeFactors(sce)
+  if (is.null(sf)) {
+    message("    ! No size factors; skipping ", sample_name)
+    return(NULL)
+  }
   
-  # Normalize counts and apply log1p transformation
-  norm_counts <- log1p(t(t(counts(sce)) / size_factors))
+  # Apply normalization
+  norm_counts <- log1p(t(t(raw_counts) / sf))
   
-  # Store normalized data in a new assay
+  # Ensure rownames and colnames
+  rownames(norm_counts) <- rownames(raw_counts)
+  colnames(norm_counts) <- colnames(raw_counts)
+  
+  # Add normalized assay
   obj[["scran_norm"]] <- CreateAssayObject(data = norm_counts)
   DefaultAssay(obj) <- "scran_norm"
+  obj$size_factors <- sf
   
+  message("    ✓ Normalization complete for ", sample_name)
   return(obj)
 }
 
-# Apply normalization to each sample in the list
-seurat_list_norm <- mapply(normalize_with_scran, seurat_list, names(seurat_list),
-                           SIMPLIFY = FALSE)
+# Run normalization
+seurat_list_norm <- mapply(
+  normalize_with_scran,
+  seurat_list,
+  names(seurat_list),
+  SIMPLIFY = FALSE
+)
 
-# Save the output
-saveRDS(seurat_list_norm, file = file.path(outdir, "seurat_list_scran_normalized.rds"))
-message("# Saved: seurat_list_scran_normalized.rds")
+# Drop failed samples
+ok <- !vapply(seurat_list_norm, is.null, logical(1))
+if (!all(ok)) {
+  message("# Skipping ", sum(!ok), " failed samples.")
+  seurat_list_norm <- seurat_list_norm[ok]
+}
+
+# Save output
+output_file <- file.path(outdir, "seurat_list_scran_normalized.rds")
+saveRDS(seurat_list_norm, file = output_file)
+message("# DONE. Saved: ", output_file)
+
