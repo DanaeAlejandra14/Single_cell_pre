@@ -1,0 +1,16 @@
+name: norm_scran_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base=4.4.1
+  - r-seurat
+  - r-tidyverse
+  - r-matrix
+  - bioconductor-scran
+  - bioconductor-scater
+  - bioconductor-singlecellexperiment
+  - bioconductor-biocparallel
+  - r-optparse
+  - r-jsonlite
