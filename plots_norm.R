@@ -1,42 +1,84 @@
 #!/usr/bin/env Rscript
 
+# Load required packages
+suppressPackageStartupMessages({
+  library(Seurat)
+  library(Matrix)
+  library(ggplot2)
+  library(patchwork)
+})
+
+# Get input file from command line
 args <- commandArgs(trailingOnly = TRUE)
+if (length(args) < 1) {
+  stop("Usage: Rscript plots_norm.R <path_to_seurat_list_scran_normalized.rds>")
+}
 input_path <- args[1]
+stopifnot(file.exists(input_path))
 
-library(Seurat)
-library(scran)
-library(Matrix)
-library(ggplot2)
-
-# Load normalized object
+# Load Seurat list
 seurat_list <- readRDS(input_path)
-sample_name <- names(seurat_list)[1]  # Just an example sample
-obj <- seurat_list[[sample_name]]
+message("Loaded Seurat list with ", length(seurat_list), " samples.")
 
-# Extract raw counts and size factors 
-raw_counts <- GetAssayData(obj, assay = "RNA", layer = "counts")
-scran_sf <- obj$size_factors
+# Initialize storage
+all_metadata <- data.frame()
 
-# Compute library size factor (total counts per cell)
-lib_sf <- Matrix::colSums(raw_counts)
-lib_sf <- lib_sf / mean(lib_sf)  # Normalize to mean 1
+# Loop through all samples
+for (sample_name in names(seurat_list)) {
+  obj <- seurat_list[[sample_name]]
+  
+  # Skip if missing size_factors
+  if (is.null(obj$size_factors)) next
+  
+  # Extract data
+  raw_total <- Matrix::colSums(GetAssayData(obj, assay = "RNA", slot = "counts"))
+  norm_total <- Matrix::colSums(GetAssayData(obj, assay = "scran_norm", slot = "data"))
+  size_factors <- obj$size_factors
+  
+  # Build table
+  df <- data.frame(
+    sample = sample_name,
+    raw_total = raw_total,
+    norm_total = norm_total,
+    size_factor = size_factors,
+    cell = names(raw_total)
+  )
+  
+  all_metadata <- rbind(all_metadata, df)
+}
 
-#  Scatter plot: Deconvolution vs Library size factors 
-png("scran_vs_library_sf.png", width = 800, height = 600)
-plot(lib_sf, scran_sf,
-     xlab = "Library size factor",
-     ylab = "Deconvolution size factor",
-     log = "xy", pch = 16, col = "steelblue")
-abline(a = 0, b = 1, col = "red", lwd = 2)
-dev.off()
+# ---- PLOT 1: Histograms before vs after normalization ----
+all_metadata$log1p_raw <- log1p(all_metadata$raw_total)
+all_metadata$log1p_norm <- log1p(all_metadata$norm_total)
 
-#  Histograms 
-total_counts <- Matrix::colSums(raw_counts)
-scran_counts <- Matrix::colSums(GetAssayData(obj, assay = "scran_norm", slot = "data"))
+p1 <- ggplot(all_metadata, aes(x = log1p_raw)) +
+  geom_histogram(fill = "steelblue", bins = 60) +
+  labs(title = "Total raw counts (log1p)", x = "log1p(Raw counts)", y = "Frequency") +
+  theme_minimal()
 
-png("scran_histograms.png", width = 1000, height = 500)
-par(mfrow = c(1,2))
-hist(total_counts, breaks = 100, main = "Total counts", xlab = "total_counts", col = "lightblue")
-hist(scran_counts, breaks = 100, main = "log1p with Scran estimated size factors", col = "lightgreen")
-dev.off()
+p2 <- ggplot(all_metadata, aes(x = log1p_norm)) +
+  geom_histogram(fill = "orchid", bins = 60) +
+  labs(title = "Scran normalized counts (log1p)", x = "log1p(Scran counts)", y = "Frequency") +
+  theme_minimal()
 
+# Save histogram comparison
+ggsave("scran_normalization_global_histograms.png", plot = p1 + p2, width = 10, height = 5)
+message("Saved: scran_normalization_global_histograms.png")
+
+# ---- PLOT 2: Library size factor vs scran size factor ----
+lib_size_factor <- all_metadata$raw_total / mean(all_metadata$raw_total)
+
+p3 <- ggplot(all_metadata, aes(x = lib_size_factor, y = size_factor)) +
+  geom_point(alpha = 0.4, size = 1) +
+  scale_x_log10() + scale_y_log10() +
+  labs(
+    title = "Library vs Scran size factor",
+    x = "Library size factor (log10)",
+    y = "Scran size factor (log10)"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
+  theme_minimal()
+
+# Save scatter plot
+ggsave("scran_size_factor_comparison.png", plot = p3, width = 6, height = 5)
+message("Saved: scran_size_factor_comparison.png")
