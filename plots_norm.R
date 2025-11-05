@@ -1,53 +1,42 @@
 #!/usr/bin/env Rscript
 
-# ==== Evaluar normalización scran de objetos Seurat ====
-
-suppressPackageStartupMessages({
-  library(Seurat)
-  library(Matrix)
-  library(ggplot2)
-  library(patchwork)
-})
-
-# Leer argumento
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) < 1) {
-  stop("Uso: Rscript evaluar_normalizacion.R /ruta/al/seurat_list_scran_normalized.rds")
-}
 input_path <- args[1]
-if (!file.exists(input_path)) stop("No se encuentra el archivo: ", input_path)
 
-# Leer objeto
+library(Seurat)
+library(scran)
+library(Matrix)
+library(ggplot2)
+
+# Load normalized object
 seurat_list <- readRDS(input_path)
-
-# Elegir una muestra para evaluar
-sample_name <- names(seurat_list)[1]
+sample_name <- names(seurat_list)[1]  # Just an example sample
 obj <- seurat_list[[sample_name]]
-message("Evaluando muestra: ", sample_name)
 
-# Calcular counts
-obj$nCount_RNA   <- Matrix::colSums(GetAssayData(obj, assay = "RNA", layer = "counts"))
-obj$nCount_scran <- Matrix::colSums(GetAssayData(obj, assay = "scran_norm", slot = "data"))
+# Extract raw counts and size factors 
+raw_counts <- GetAssayData(obj, assay = "RNA", layer = "counts")
+scran_sf <- obj$size_factors
 
-# Agregar al metadata
-obj <- AddMetaData(obj, metadata = obj$nCount_RNA, col.name = "raw_counts")
-obj <- AddMetaData(obj, metadata = obj$nCount_scran, col.name = "scran_norm_counts")
+# Compute library size factor (total counts per cell)
+lib_sf <- Matrix::colSums(raw_counts)
+lib_sf <- lib_sf / mean(lib_sf)  # Normalize to mean 1
 
-# Gráfico 1: size factors vs raw counts
-p1 <- ggplot(obj@meta.data, aes(x = raw_counts, y = size_factors)) +
-  geom_point(alpha = 0.3) +
-  scale_x_log10() + scale_y_log10() +
-  labs(title = "Size factors vs. Raw counts", x = "Raw counts", y = "Size factors") +
-  theme_minimal()
+#  Scatter plot: Deconvolution vs Library size factors 
+png("scran_vs_library_sf.png", width = 800, height = 600)
+plot(lib_sf, scran_sf,
+     xlab = "Library size factor",
+     ylab = "Deconvolution size factor",
+     log = "xy", pch = 16, col = "steelblue")
+abline(a = 0, b = 1, col = "red", lwd = 2)
+dev.off()
 
-# Gráfico 2: densidad de raw vs scran_norm
-p2 <- ggplot(obj@meta.data, aes(x = log1p(raw_counts))) +
-  geom_density(fill = "blue", alpha = 0.4) +
-  geom_density(aes(x = log1p(scran_norm_counts)), fill = "red", alpha = 0.4) +
-  labs(title = "Distribución Raw vs Scran (log1p)", x = "log1p(counts)", y = "Densidad") +
-  theme_minimal()
+#  Histograms 
+total_counts <- Matrix::colSums(raw_counts)
+scran_counts <- Matrix::colSums(GetAssayData(obj, assay = "scran_norm", slot = "data"))
 
-# Guardar gráfico combinado
-output_file <- "diagnostic_plot.png"
-ggsave(output_file, p1 + p2, width = 10, height = 5, dpi = 300)
-message("Gráfico guardado en: ", output_file)
+png("scran_histograms.png", width = 1000, height = 500)
+par(mfrow = c(1,2))
+hist(total_counts, breaks = 100, main = "Total counts", xlab = "total_counts", col = "lightblue")
+hist(scran_counts, breaks = 100, main = "log1p with Scran estimated size factors", col = "lightgreen")
+dev.off()
+
