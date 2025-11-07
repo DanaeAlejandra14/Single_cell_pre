@@ -5,6 +5,7 @@ suppressPackageStartupMessages({
   library(Seurat)
   library(Matrix)
   library(ggplot2)
+  library(scales)
   library(patchwork)
 })
 
@@ -47,7 +48,7 @@ for (sample_name in names(seurat_list)) {
   all_metadata <- rbind(all_metadata, df)
 }
 
-# ---- PLOT 1: Histograms before vs after normalization ----
+# PLOT 1: Histograms before vs after normalization 
 all_metadata$log1p_raw <- log1p(all_metadata$raw_total)
 all_metadata$log1p_norm <- log1p(all_metadata$norm_total)
 
@@ -65,7 +66,31 @@ p2 <- ggplot(all_metadata, aes(x = log1p_norm)) +
 ggsave("scran_normalization_global_histograms.png", plot = p1 + p2, width = 10, height = 5)
 message("Saved: scran_normalization_global_histograms.png")
 
-# ---- PLOT 2: Library size factor vs scran size factor ----
+# PLOT 2.5 Histograms in real scale (no log1p) 
+
+# Reverse log1p to get raw counts
+real_raw <- expm1(all_metadata$log1p_raw)
+real_norm <- expm1(all_metadata$log1p_norm)
+
+# Plot histograms
+p_real_raw <- ggplot(data.frame(real_raw), aes(x = real_raw)) +
+  geom_histogram(fill = "steelblue", bins = 60) +
+  labs(title = "Total raw counts", x = "Raw counts", y = "Frequency") +
+  scale_x_continuous(labels = scales::comma_format()) +
+  theme_minimal()
+
+p_real_norm <- ggplot(data.frame(real_norm), aes(x = real_norm)) +
+  geom_histogram(fill = "orchid", bins = 60) +
+  labs(title = "Scran normalized counts", x = "Normalized counts", y = "Frequency") +
+  scale_x_continuous(labels = scales::comma_format()) +
+  theme_minimal()
+
+# Save the figure
+ggsave("scran_histograms_real_counts.png", plot = p_real_raw + p_real_norm, width = 10, height = 5)
+message("Saved: scran_histograms_real_counts.png")
+
+
+# PLOT 2: Library size factor vs scran size factor 
 lib_size_factor <- all_metadata$raw_total / mean(all_metadata$raw_total)
 
 p3 <- ggplot(all_metadata, aes(x = lib_size_factor, y = size_factor)) +
