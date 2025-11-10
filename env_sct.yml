@@ -1,0 +1,15 @@
+name: sctransform_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base=4.3
+  - r-seurat
+  - r-sctransform
+  - bioconductor-singlecellexperiment
+  - bioconductor-glmgampoi
+  - r-tidyverse
+  - r-patchwork
+  - r-ggplot2
+  - r-matrix
