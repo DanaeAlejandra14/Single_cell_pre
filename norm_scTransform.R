@@ -46,14 +46,21 @@ outdir <- file.path("normalized_out", paste0(base, "-", stamp))
 dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
 message("# Output directory: ", outdir)
 
-# ---- Normalization with SCTransform ----
+# Normalization with SCTransform 
+
 normalize_with_sct <- function(obj, sample_name) {
   message("  >> Normalizing sample: ", sample_name)
   
   DefaultAssay(obj) <- "RNA"
   
   tryCatch({
-    obj <- SCTransform(obj, assay = "RNA", new.assay.name = "SCT", verbose = FALSE)
+    obj <- SCTransform(
+      obj,
+      assay = "RNA",
+      new.assay.name = "SCT",
+      vars.to.regress = c("percent.mt", "nCount_RNA"),
+      verbose = FALSE
+    )
     message("    ✓ Normalization complete for ", sample_name)
     return(obj)
   }, error = function(e) {
