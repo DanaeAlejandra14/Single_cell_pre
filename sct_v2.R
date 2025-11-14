@@ -54,13 +54,15 @@ normalize_with_sct <- function(obj, sample_name) {
   DefaultAssay(obj) <- "RNA"
   
   tryCatch({
-    obj <- SCTransform(
-      obj,
-      assay = "RNA",
-      new.assay.name = "SCT",
-      vars.to.regress = c("percent.mt", "nCount_RNA"),
-      verbose = FALSE
-    )
+      obj <- SCTransform(
+        obj,
+        assay = "RNA",
+        new.assay.name = "SCT",
+        vars.to.regress = c("percent.mt", "nCount_RNA"),
+        vst.flavor = "v2",
+        return.only.var.genes = FALSE,
+        verbose = FALSE
+        )
     message("    ✓ Normalization complete for ", sample_name)
     return(obj)
   }, error = function(e) {
@@ -72,7 +74,7 @@ normalize_with_sct <- function(obj, sample_name) {
 # Apply normalization
 seurat_list_norm <- mapply(
   normalize_with_sct,
-  seurat_list, Rscript ~/AD_single_cell/Single_cell_pre/sct\ _v2.R /STORAGE/csbig/sc_ADers/qc_out/matrices_demultiplexed_minimal-2025-11-05_15-09/seurat_list_filtered.rds
+  seurat_list,
   names(seurat_list),
   SIMPLIFY = FALSE
 )
