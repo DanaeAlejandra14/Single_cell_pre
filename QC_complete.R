@@ -36,10 +36,10 @@ mt_pattern     <- "^MT-"   # human: "^MT-" ; mouse: "^mt-"
 stamp  <- format(Sys.time(), "%Y-%m-%d_%H-%M")
 base   <- tools::file_path_sans_ext(basename(input_path))
 
-base_outdir <- "C:/Users/danae/OneDrive/Documentos/ayuda"
+base_outdir <- getwd()
 outdir <- file.path(base_outdir, paste0(base, "-", stamp))
 dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
-msg("# Outdir (ABSOLUTA): ", normalizePath(outdir, winslash = "/", mustWork = FALSE))
+msg("# Outdir (PWD): ", normalizePath(outdir, winslash = "/", mustWork = FALSE))
 
 msg("# QC run started")
 msg("# Input: ", input_path)
