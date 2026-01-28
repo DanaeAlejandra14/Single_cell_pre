@@ -22,6 +22,11 @@ suppressPackageStartupMessages({
   library(readr)
 })
 
+msg <- function(...) {
+  cat(paste0(...), "\n")
+}
+
+
 msg("# Packages loaded")
 
 #Parameters 
