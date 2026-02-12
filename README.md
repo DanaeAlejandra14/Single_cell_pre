@@ -123,3 +123,34 @@ Multiple QC plots saved in PNG and JPG
 
 A combined PDF report:
  QC_all_plots_2perpage.pdf
+
+## Normalization, Merge, and Integration
+
+Script : 3.merge_integration.R
+
+Merge QC-filtered Seurat objects, perform standard log-normalization, and integrate the dataset while correcting batch effects using Harmony. This step generates an integrated embedding (UMAP), clustering results, and a final merged Seurat object 
+
+Input
+seurat_list_filtered.rds
+ (output from Step 2: QC-filtered Seurat object list)
+
+
+ROSMAP_assay_scrnaSeq_metadata.csv, clinical_stratified.csv 
+Output
+An output directory (set by --out_dir) containing:
+merged_by_individual_harmony.rds
+ Final integrated Seurat object (Harmony-corrected)
+
+
+merged_by_individual_harmony_cell_metadata.csv
+ Cell-level metadata from the final object
+
+
+UMAPs and graphics
+Notes
+Normalization method: Seurat NormalizeData() (log-normalization).
+
+
+Batch correction: Harmony integration on libraryBatch (other variables like platformLocation can be added if needed).
+
+
