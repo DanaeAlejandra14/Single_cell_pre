@@ -44,6 +44,7 @@ ROSMAP_snRNAseq_demultiplexed_ID_mapping.csv
 
 ## Demultiplexing 
 Script : 1.demultiplex_matrices.R
+
 Background: why demultiplexing is required in ROSMAP (DLPFC Experiment 2) : In this dataset, most count matrices correspond to pooled libraries, meaning that a single matrix contains cells from multiple donors.
  Libraries were generated from pooled samples as follows: 222 libraries include 8 donors, 4 libraries include 7 donors, and 8 libraries include a single donor.
 Additionally:
@@ -76,6 +77,7 @@ cellBarcode + libraryBatch → individualID
 
 
 ## Quality control 
+
 Script : 2.quality_control.R 
 Make  structural integrity validation of the input Seurat objects (Seurat v5 layers-aware), ensuring the data are readable, consistent, and properly annotated before filtering.
 
