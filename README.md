@@ -1,4 +1,4 @@
-Single cell networks repository 
+# Single cell networks repository 
 
 This repository implements a reproducible pipeline for single-cell RNA sequencing (scRNA-seq) analysis, following current best practices for single-cell preprocessing as described in Luecken & Theis (2019).
 The primary objectives of this project are:
