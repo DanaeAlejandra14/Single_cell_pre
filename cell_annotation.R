@@ -7,20 +7,29 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(tibble)
   library(readr)
+  library(future)
 })
 
 #Define option list for inputs 
 option_list <- list(
   make_option(c("--seurat_rds"), type = "character", help = "Ruta al Seurat integrado (.rds)", metavar = "FILE"),
   make_option(c("--anno_csv"),   type = "character", help = "Ruta al CSV de anotación celular", metavar = "FILE"),
-  make_option(c("--out_dir"),    type = "character", default = "out_annotated", help = "Directorio de salida [default: %default]"),
-  make_option(c("--mt_pattern"), type = "character", default = "^MT-", help = "Patrón genes mitocondriales (por si lo necesitas luego) [default: %default]")
-)
+  make_option(c("--out_dir"),    type = "character", default = "out_annotated_final", help = "Directorio de salida [default: %default]"),
+  make_option(c("-w", "--workers"), type = "integer",default = 4 ,help = "Parallel workers [default: %default]"),
+  make_option(c("--seed"), type = "integer", default = 42,help = "Random seed [default: %default]")
+  )
 
 opt <- parse_args(OptionParser(option_list = option_list))
+set.seed(opt$seed)
 
 stopifnot(!is.null(opt$seurat_rds), !is.null(opt$anno_csv))
 stopifnot(file.exists(opt$seurat_rds), file.exists(opt$anno_csv))
+
+# Parallelization
+
+plan(multicore, workers = opt$workers)
+options(future.globals.maxSize = 200 * 1024^3)
+
 
 # Output dir
 
