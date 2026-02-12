@@ -79,6 +79,7 @@ cellBarcode + libraryBatch → individualID
 ## Quality control 
 
 Script : 2.quality_control.R 
+
 Make  structural integrity validation of the input Seurat objects (Seurat v5 layers-aware), ensuring the data are readable, consistent, and properly annotated before filtering.
 
 
