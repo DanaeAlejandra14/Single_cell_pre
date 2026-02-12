@@ -69,9 +69,9 @@ ROSMAP_snRNAseq_demultiplexed_ID_mapping.csv (syn34572333)
 This file links:
 cellBarcode + libraryBatch → individualID
 
-Input : count matrices (syn3157322) 
+- Input : count matrices (syn3157322) 
 
-Output file  : matrices_demultiplexed_final.rds  -> A flattened list of Seurat objects, where each element corresponds to an individual donor within a given library batch (named as libraryBatch_individualID).
+- Output file  : matrices_demultiplexed_final.rds  -> A flattened list of Seurat objects, where each element corresponds to an individual donor within a given library batch (named as libraryBatch_individualID).
 
 
 
@@ -81,12 +81,10 @@ Make  structural integrity validation of the input Seurat objects (Seurat v5 lay
 
 
 Perform standardized, multi-metric quality control on demultiplexed Seurat objects to remove low-quality cells, lowly detected genes, and predicted doublets before normalization/integration.
-Input - A list of Seurat objects
 
+- Input - A list of Seurat objects -> matrices_demultiplexed_final.rds
 
-matrices_demultiplexed_final.rds
-
-Output
+- Output
 A timestamped output folder created in the current working directory:
 
 <INPUT_BASENAME>-YYYY-MM-DD_HH-MM/
@@ -109,16 +107,16 @@ QC thresholds (current defaults): Cells are retained if they have at least 700 d
 Script : 2.1.qc_plots.R
 
 This script takes as input the QC run output directory (the folder created by 2.quality_control.R) and reads the summary tables generated during QC . Using these files, it produces a complete set of QC plots to evaluate filtering thresholds and sample-level quality.
-Input
+
+- Input
 A QC output folder created in Step 2, for example:
 matrices_demultiplexed_final-YYYY-MM-DD_HH-MM/
-Output
+- Output
 A plots directory automatically created at:
 qc_plots_cowplot_style/<QC_RUN_FOLDER_NAME>/
 
 This folder contains:
 Multiple QC plots saved in PNG and JPG
-
 
 A combined PDF report:
  QC_all_plots_2perpage.pdf
