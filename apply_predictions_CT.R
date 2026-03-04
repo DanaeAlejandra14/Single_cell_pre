@@ -3,6 +3,7 @@
 suppressPackageStartupMessages({
   library(optparse)
   library(Seurat)
+  library(future)
   library(readr)
   library(dplyr)
   library(ggplot2)
