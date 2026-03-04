@@ -108,10 +108,13 @@ obj$celltypist_max_prob[common_cells] <- prob_map[common_cells]
 obj$celltypist_margin[common_cells]   <- mar_map[common_cells]
 
 # assigned_by_celltypist: label exists and is not "Unassigned"
+#TRUE -> Cell typist could assigned 
+#False -> Cell typist could not assigned 
 obj$assigned_by_celltypist[common_cells] <- !is.na(obj$celltypist_simple[common_cells]) &
   obj$celltypist_simple[common_cells] != "Unassigned"
 
 # Optional additional confidence filter before filling cell_type
+#You have to put the min conf of probability , if not is only select the cell wich dont have "NA"
 if (!is.na(opt$min_prob)) {
   obj$assigned_by_celltypist[common_cells] <- obj$assigned_by_celltypist[common_cells] &
     !is.na(obj$celltypist_max_prob[common_cells]) &
@@ -125,18 +128,24 @@ print(table(obj$assigned_by_celltypist))
 if (!("cell_type" %in% colnames(obj@meta.data))) {
   stop("Required column 'cell_type' not found in Seurat meta.data")
 }
-
+#What cell did not have a previos annotation ? select the cell NA in the original anotation
+#True: cell_type was NA / False : cell_type with previos anno
+#na: cells NA in the original anno
 na_cells <- colnames(obj)[is.na(obj$cell_type)]
 cat("# Original NA cells: ", length(na_cells), "\n")
 
+#Intersect common cells who was na_cells and CT annotate
 fill_cells <- intersect(na_cells, common_cells)
+#Make the vector TRUE/FALSE , just keep true (not previos assigned a cell type)
 fill_cells <- fill_cells[obj$assigned_by_celltypist[fill_cells]]  # only those confidently assigned
 
+#fill the cell_type just in that cells 
 obj$cell_type[fill_cells] <- obj$celltypist_simple[fill_cells]
+#for plots 
 obj$cell_type_plot_final <- ifelse(is.na(obj$cell_type), "Unassigned", obj$cell_type)
 
-cat("# Filled: ", length(fill_cells), "\n")
-cat("# Remaining NA: ", sum(is.na(obj$cell_type)), "\n")
+cat("# Filled: ", length(fill_cells), "\n") #How much could be filled with CT?
+cat("# Remaining NA: ", sum(is.na(obj$cell_type)), "\n") # Remain NA?
 
 # Track annotation source, where this cell was annoateted?
 obj$annotation_source <- "original"
