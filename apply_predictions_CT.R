@@ -30,7 +30,7 @@ option_list <- list(
 )
 
 opt <- parse_args(OptionParser(option_list = option_list))
-
+#Validate the existance of the rds and csv
 stopifnot(!is.null(opt$seurat_rds), file.exists(opt$seurat_rds))
 stopifnot(!is.null(opt$pred_csv),   file.exists(opt$pred_csv))
 
@@ -38,6 +38,7 @@ stopifnot(!is.null(opt$pred_csv),   file.exists(opt$pred_csv))
 plan(multicore, workers = opt$workers)
 set.seed(opt$seed)
 
+#create the carpet , folder out 
 dir.create(opt$out_dir, recursive = TRUE, showWarnings = FALSE)
 
 cat("# Seurat rds: ", opt$seurat_rds, "\n")
@@ -53,11 +54,14 @@ cat("# Loading Seurat object...\n")
 obj <- readRDS(opt$seurat_rds)
 cat("# Cells in Seurat: ", ncol(obj), "\n")
 
+#Load the csv with the predictions of cel typist 
 cat("# Loading CellTypist predictions...\n")
-pred <- readr::read_csv(opt$pred_csv, show_col_types = FALSE)
+#pred: the data frame that came from Cell Typist 
+pred <- readr::read_csv(opt$pred_csv, show_col_types = FALSE) 
 
-# Ensure types
-pred <- pred %>%
+# Ensure types matches  , normalize the input 
+# Ensure key columns are stored as character rather than factor.
+pred <- pred %>% #apply in "pred"
   mutate(
     cell = as.character(cell),
     celltypist_label = as.character(celltypist_label),
@@ -68,16 +72,18 @@ cat("# Pred rows: ", nrow(pred), "\n")
 cat("# Unique cells in pred: ", length(unique(pred$cell)), "\n")
 
 # We need to match the cells 
+# The merge , here is the importante of the match beetwen cells in the original Seurat object and the predictions
+# colnames(obj) : Seurat , pred$cell : CellTypist
 common_cells <- intersect(colnames(obj), pred$cell)
-cat("# Cells that match Seurat: ", length(common_cells), "\n")
-cat("# Cells in pred not in Seurat: ", sum(!pred$cell %in% colnames(obj)), "\n")
-cat("# Cells in Seurat not in pred: ", sum(!colnames(obj) %in% pred$cell), "\n")
+cat("# Cells that match Seurat: ", length(common_cells), "\n") #Cells that match 
+cat("# Cells in pred not in Seurat: ", sum(!pred$cell %in% colnames(obj)), "\n") #Cells that are in prediction.csv but not in seurat , ideal =0
+cat("# Cells in Seurat not in pred: ", sum(!colnames(obj) %in% pred$cell), "\n") # Cells only in Seurat -> assigned the first time 
 
 if (length(common_cells) == 0) {
   stop("No overlapping cells between Seurat object and prediction CSV.")
 }
 
-# Add this columns , the same that csv 
+# Add this columns , the same that csv that came from cell typist
 obj$celltypist_label <- NA_character_
 obj$celltypist_simple <- NA_character_
 obj$celltypist_max_prob <- NA_real_
