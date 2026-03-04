@@ -83,18 +83,25 @@ if (length(common_cells) == 0) {
   stop("No overlapping cells between Seurat object and prediction CSV.")
 }
 
-# Add this columns , the same that csv that came from cell typist
-obj$celltypist_label <- NA_character_
+# Create this new colums in Seurat in meta.data  #is the same as ->  obj@meta.data$nombre_columna
+#Create one row per cell
+# NA :text
+obj$celltypist_label <- NA_character_  
 obj$celltypist_simple <- NA_character_
 obj$celltypist_max_prob <- NA_real_
 obj$celltypist_margin <- NA_real_
 obj$assigned_by_celltypist <- FALSE
 
-lab_map <- setNames(pred$celltypist_label, pred$cell)
-sim_map <- setNames(pred$celltype_simple, pred$cell)
-prob_map <- setNames(pred$max_prob, pred$cell)
-mar_map  <- setNames(pred$margin_top1_top2, pred$cell)
+# map -> Como un vector nombrado , tipo diccionario 
+# Diferents label are associated to a barcode 
 
+lab_map <- setNames(pred$celltypist_label, pred$cell)  #specific type
+sim_map <- setNames(pred$celltype_simple, pred$cell) #symple type 
+prob_map <- setNames(pred$max_prob, pred$cell) # prob
+mar_map  <- setNames(pred$margin_top1_top2, pred$cell) #margen
+
+# coomon cells : is a vector of barcodes 
+#lab_map -> give the name of each label 
 obj$celltypist_label[common_cells]  <- lab_map[common_cells]
 obj$celltypist_simple[common_cells] <- sim_map[common_cells]
 obj$celltypist_max_prob[common_cells] <- prob_map[common_cells]
@@ -131,7 +138,7 @@ obj$cell_type_plot_final <- ifelse(is.na(obj$cell_type), "Unassigned", obj$cell_
 cat("# Filled: ", length(fill_cells), "\n")
 cat("# Remaining NA: ", sum(is.na(obj$cell_type)), "\n")
 
-# Track annotation source 
+# Track annotation source, where this cell was annoateted?
 obj$annotation_source <- "original"
 obj$annotation_source[fill_cells] <- "celltypist"
 obj$annotation_source[colnames(obj)[is.na(obj$cell_type)]] <- "unassigned"
@@ -139,7 +146,7 @@ obj$annotation_source[colnames(obj)[is.na(obj$cell_type)]] <- "unassigned"
 cat("# annotation_source table:\n")
 print(table(obj$annotation_source))
 
-#  Plots 
+#  Plots :) 
 
 # Note: ggrepel overlap control is global option (DimPlot doesn't accept max.overlaps arg directly)
 options(ggrepel.max.overlaps = 500)
@@ -151,11 +158,11 @@ save_png <- function(p, filename, width = 2400, height = 2000, res = 300) {
   dev.off()
 }
 
-# 1: Full UMAP: cell_type_plot_final (basic)
+# 1: Full UMAP: cell_type_plot_final 
 p1 <- DimPlot(obj, group.by = "cell_type_plot_final", label = TRUE) + NoLegend()
 save_png(p1, "umap_cell_type_plot_final_basic.png")
 
-# 2: Full UMAP: repel + pt.size/label.size (your variants)
+# 2: Full UMAP
 p2 <- DimPlot(obj,
               group.by = "cell_type_plot_final",
               label = TRUE,
