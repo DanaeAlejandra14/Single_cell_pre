@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reporte Exploratorio Seurat</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;margin:40px;color:#2c3e50;background:#f8f9fa}
+h1{color:#2c3e50;border-bottom:3px solid #3498db;padding-bottom:10px}
+h2{color:#2980b9;border-left:4px solid #3498db;padding-left:10px;margin-top:40px}
+h3{color:#34495e}
+.tabla{border-collapse:collapse;width:100%;font-size:13px;margin-bottom:20px}
+.tabla th{background:#3498db;color:white;padding:8px 12px;text-align:left}
+.tabla td{padding:6px 12px;border-bottom:1px solid #dee2e6}
+.tabla tr:nth-child(even){background:#ecf0f1}
+.tabla tr:hover{background:#d5e8f7}
+.caja{background:white;border-radius:8px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,0.08);margin-bottom:25px}
+.badge{display:inline-block;background:#3498db;color:white;border-radius:4px;padding:2px 8px;font-size:12px;margin:2px}
+.badge-green{background:#27ae60}
+.badge-orange{background:#e67e22}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.grid2{grid-template-columns:1fr}}
+</style>
+</head><body>
+
+<h1>Reporte Exploratorio del Objeto Seurat</h1>
+<p><strong>Archivo:</strong> <code>/STORAGE/csbig/sc_ADers/celltypist/celltypist/unassigned_only_final/annotation_with_celltypist/merged_harmony_integrated_annotated_plus_celltypist.rds</code><br>
+<strong>Generado:</strong> 2026-05-07 15:57:54</p>
+
+<h2>1. Información General</h2>
+<div class="caja"><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Parametro</th><th>Valor</th></tr></thead><tbody><tr><td>Células totales</td><td>1,367,604</td></tr>
+<tr><td>Genes totales</td><td>35,010</td></tr>
+<tr><td>Assays</td><td>RNA</td></tr>
+<tr><td>Reducciones</td><td>pca, umap, harmony</td></tr>
+<tr><td>Columnas metadata</td><td>26</td></tr></tbody></table></div></div>
+
+<h2>2. Columnas de Metadata</h2>
+<div class="caja"><h4>Todas las columnas en @meta.data</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Columna</th><th>Tipo</th><th>N_unicos</th><th>N_NA</th><th>Pct_NA</th></tr></thead><tbody><tr><td>orig.ident</td><td>character</td><td>   124</td><td>      0</td><td>0%</td></tr>
+<tr><td>nCount_RNA</td><td>numeric</td><td> 64829</td><td>      0</td><td>0%</td></tr>
+<tr><td>nFeature_RNA</td><td>integer</td><td> 10996</td><td>      0</td><td>0%</td></tr>
+<tr><td>sample</td><td>character</td><td>   124</td><td>      0</td><td>0%</td></tr>
+<tr><td>libraryBatch</td><td>factor</td><td>   124</td><td>      0</td><td>0%</td></tr>
+<tr><td>individualID</td><td>character</td><td>   328</td><td>      0</td><td>0%</td></tr>
+<tr><td>percent.mt</td><td>numeric</td><td>878604</td><td>      0</td><td>0%</td></tr>
+<tr><td>sample_id</td><td>character</td><td>   124</td><td>      0</td><td>0%</td></tr>
+<tr><td>is_AD</td><td>character</td><td>     4</td><td>      0</td><td>0%</td></tr>
+<tr><td>cogdx</td><td>numeric</td><td>     5</td><td>      0</td><td>0%</td></tr>
+<tr><td>ceradsc</td><td>numeric</td><td>     4</td><td>      0</td><td>0%</td></tr>
+<tr><td>braaksc</td><td>numeric</td><td>     7</td><td>      0</td><td>0%</td></tr>
+<tr><td>pmi</td><td>numeric</td><td>   194</td><td>   4525</td><td>0.3%</td></tr>
+<tr><td>RNA_snn_res.0.3</td><td>factor</td><td>    33</td><td>      0</td><td>0%</td></tr>
+<tr><td>seurat_clusters</td><td>factor</td><td>    33</td><td>      0</td><td>0%</td></tr>
+<tr><td>cell_type</td><td>character</td><td>    19</td><td>  91743</td><td>6.7%</td></tr>
+<tr><td>cell_state</td><td>character</td><td>    96</td><td> 235674</td><td>17.2%</td></tr>
+<tr><td>cell_type_plot</td><td>character</td><td>    17</td><td>      0</td><td>0%</td></tr>
+<tr><td>celltypist_label</td><td>character</td><td>    62</td><td>1131930</td><td>82.8%</td></tr>
+<tr><td>celltypist_simple</td><td>character</td><td>    11</td><td>1131930</td><td>82.8%</td></tr>
+<tr><td>celltypist_max_prob</td><td>numeric</td><td>235352</td><td>1131930</td><td>82.8%</td></tr>
+<tr><td>celltypist_margin</td><td>numeric</td><td>235675</td><td>1131930</td><td>82.8%</td></tr>
+<tr><td>assigned_by_celltypist</td><td>logical</td><td>     2</td><td>      0</td><td>0%</td></tr>
+<tr><td>cell_type_plot_final</td><td>character</td><td>    19</td><td>      0</td><td>0%</td></tr>
+<tr><td>annotation_source</td><td>character</td><td>     3</td><td>      0</td><td>0%</td></tr>
+<tr><td>cell_type_keep_only</td><td>character</td><td>     7</td><td> 169462</td><td>12.4%</td></tr></tbody></table></div></div>
+
+<h2>3. Columnas Detectadas por Tipo</h2>
+<div class="caja">
+<p><strong>Anotacion canonica (BEYOND/Synapse):</strong><br><span class="badge">seurat_clusters</span> <span class="badge">cell_type</span> <span class="badge">cell_type_plot</span> <span class="badge">celltypist_label</span> <span class="badge">cell_type_plot_final</span> <span class="badge">annotation_source</span> <span class="badge">cell_type_keep_only</span></p>
+<p><strong>CellTypist:</strong><br><span class="badge badge-green">celltypist_label</span> <span class="badge badge-green">celltypist_simple</span> <span class="badge badge-green">celltypist_max_prob</span> <span class="badge badge-green">celltypist_margin</span> <span class="badge badge-green">assigned_by_celltypist</span></p>
+<p><strong>Variables clinicas:</strong><br><span class="badge badge-orange">sample</span> <span class="badge badge-orange">libraryBatch</span> <span class="badge badge-orange">sample_id</span> <span class="badge badge-orange">ceradsc</span> <span class="badge badge-orange">braaksc</span> <span class="badge badge-orange">pmi</span></p>
+</div>
+
+<h2>4. Anotación Canónica (BEYOND / Synapse)</h2><div class="caja"><h3>Columna: <code>seurat_clusters</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Sin anotación</td><td>0</td><td>0%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>0</td><td>237277</td><td>17.35%</td></tr>
+<tr><td>1</td><td>169479</td><td>12.39%</td></tr>
+<tr><td>2</td><td>156002</td><td>11.41%</td></tr>
+<tr><td>3</td><td>135706</td><td>9.92%</td></tr>
+<tr><td>4</td><td> 87532</td><td>6.4%</td></tr>
+<tr><td>5</td><td> 75130</td><td>5.49%</td></tr>
+<tr><td>6</td><td> 63729</td><td>4.66%</td></tr>
+<tr><td>7</td><td> 55316</td><td>4.04%</td></tr>
+<tr><td>8</td><td> 53426</td><td>3.91%</td></tr>
+<tr><td>9</td><td> 48916</td><td>3.58%</td></tr>
+<tr><td>10</td><td> 48367</td><td>3.54%</td></tr>
+<tr><td>11</td><td> 47858</td><td>3.5%</td></tr>
+<tr><td>12</td><td> 27818</td><td>2.03%</td></tr>
+<tr><td>13</td><td> 22365</td><td>1.64%</td></tr>
+<tr><td>14</td><td> 19935</td><td>1.46%</td></tr>
+<tr><td>15</td><td> 19637</td><td>1.44%</td></tr>
+<tr><td>16</td><td> 19244</td><td>1.41%</td></tr>
+<tr><td>17</td><td> 18869</td><td>1.38%</td></tr>
+<tr><td>18</td><td> 13056</td><td>0.95%</td></tr>
+<tr><td>19</td><td> 13048</td><td>0.95%</td></tr>
+<tr><td>20</td><td>  9472</td><td>0.69%</td></tr>
+<tr><td>21</td><td>  8796</td><td>0.64%</td></tr>
+<tr><td>22</td><td>  3593</td><td>0.26%</td></tr>
+<tr><td>23</td><td>  2918</td><td>0.21%</td></tr>
+<tr><td>24</td><td>  2745</td><td>0.2%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>cell_type</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>1,275,861</td><td>93.3%</td></tr>
+<tr><td>Sin anotación</td><td>91,743</td><td>6.7%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>Excitatory Neurons</td><td>492395</td><td>36%</td></tr>
+<tr><td>Oligodendrocytes</td><td>239594</td><td>17.52%</td></tr>
+<tr><td>Inhibitory Neurons</td><td>192160</td><td>14.05%</td></tr>
+<tr><td>Astrocyte</td><td>167643</td><td>12.26%</td></tr>
+<tr><td>NA</td><td> 91743</td><td>6.71%</td></tr>
+<tr><td>Endothelial</td><td> 66707</td><td>4.88%</td></tr>
+<tr><td>Microglia</td><td> 56876</td><td>4.16%</td></tr>
+<tr><td>OPCs</td><td> 49474</td><td>3.62%</td></tr>
+<tr><td>Fibroblast</td><td>  2515</td><td>0.18%</td></tr>
+<tr><td>Pericytes</td><td>  2086</td><td>0.15%</td></tr>
+<tr><td>Immune</td><td>  1876</td><td>0.14%</td></tr>
+<tr><td>Other/Unknown</td><td>  1491</td><td>0.11%</td></tr>
+<tr><td>Macrophages</td><td>  1375</td><td>0.1%</td></tr>
+<tr><td>SMC</td><td>   729</td><td>0.05%</td></tr>
+<tr><td>Monocytes</td><td>   481</td><td>0.04%</td></tr>
+<tr><td>Erythrocytes</td><td>   261</td><td>0.02%</td></tr>
+<tr><td>NK Cells</td><td>    80</td><td>0.01%</td></tr>
+<tr><td>CD8+ T Cells</td><td>    64</td><td>0%</td></tr>
+<tr><td>Neutrophils</td><td>    54</td><td>0%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>cell_type_plot</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Sin anotación</td><td>0</td><td>0%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>Excitatory Neurons</td><td>454035</td><td>33.2%</td></tr>
+<tr><td>Unassigned</td><td>235674</td><td>17.23%</td></tr>
+<tr><td>Oligodendrocytes</td><td>225646</td><td>16.5%</td></tr>
+<tr><td>Inhibitory Neurons</td><td>180421</td><td>13.19%</td></tr>
+<tr><td>Astrocyte</td><td>158490</td><td>11.59%</td></tr>
+<tr><td>Microglia</td><td> 54737</td><td>4%</td></tr>
+<tr><td>OPCs</td><td> 43960</td><td>3.21%</td></tr>
+<tr><td>Endothelial</td><td>  6996</td><td>0.51%</td></tr>
+<tr><td>Fibroblast</td><td>  2515</td><td>0.18%</td></tr>
+<tr><td>Pericytes</td><td>  2086</td><td>0.15%</td></tr>
+<tr><td>Macrophages</td><td>  1375</td><td>0.1%</td></tr>
+<tr><td>SMC</td><td>   729</td><td>0.05%</td></tr>
+<tr><td>Monocytes</td><td>   481</td><td>0.04%</td></tr>
+<tr><td>Erythrocytes</td><td>   261</td><td>0.02%</td></tr>
+<tr><td>NK Cells</td><td>    80</td><td>0.01%</td></tr>
+<tr><td>CD8+ T Cells</td><td>    64</td><td>0%</td></tr>
+<tr><td>Neutrophils</td><td>    54</td><td>0%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>celltypist_label</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>235,674</td><td>17.2%</td></tr>
+<tr><td>Sin anotación</td><td>1,131,930</td><td>82.8%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>NA</td><td>1131930</td><td>82.77%</td></tr>
+<tr><td>Unassigned</td><td>  91743</td><td>6.71%</td></tr>
+<tr><td>Endo CLDN5 SLC7A5</td><td>  59501</td><td>4.35%</td></tr>
+<tr><td>L2-3 CUX2 ACVR1C THSD7A</td><td>  16246</td><td>1.19%</td></tr>
+<tr><td>Oligo MOG OPALIN</td><td>  13948</td><td>1.02%</td></tr>
+<tr><td>Astro AQP4 SLC1A2</td><td>   6692</td><td>0.49%</td></tr>
+<tr><td>L3-5 RORB MKX GRIN3A</td><td>   5669</td><td>0.41%</td></tr>
+<tr><td>OPC PDGFRA PCDH15</td><td>   5514</td><td>0.4%</td></tr>
+<tr><td>L6 OPRK1 THEMIS RGS6</td><td>   3866</td><td>0.28%</td></tr>
+<tr><td>InN PVALB HPSE</td><td>   2592</td><td>0.19%</td></tr>
+<tr><td>L2-3 CUX2 NTNG1 COL5A2</td><td>   2127</td><td>0.16%</td></tr>
+<tr><td>L3-5 RORB MKX DCC</td><td>   2093</td><td>0.15%</td></tr>
+<tr><td>Micro P2RY12 APBB1IP</td><td>   2016</td><td>0.15%</td></tr>
+<tr><td>L2-3 CUX2 NTNG1 PALMD</td><td>   1670</td><td>0.12%</td></tr>
+<tr><td>L2-4 CUX2 RORB CLMN</td><td>   1380</td><td>0.1%</td></tr>
+<tr><td>InN LAMP5 BMP7</td><td>   1290</td><td>0.09%</td></tr>
+<tr><td>InN VIP HS3ST3B1</td><td>   1231</td><td>0.09%</td></tr>
+<tr><td>Astro GFAP FABP7</td><td>   1114</td><td>0.08%</td></tr>
+<tr><td>InN PVALB ANOS1</td><td>    992</td><td>0.07%</td></tr>
+<tr><td>Macro F13A1 COLEC12</td><td>    982</td><td>0.07%</td></tr>
+<tr><td>Astro AQP4 OSMR</td><td>    978</td><td>0.07%</td></tr>
+<tr><td>PC P2RY14 GRM8</td><td>    913</td><td>0.07%</td></tr>
+<tr><td>InN SST FREM1</td><td>    901</td><td>0.07%</td></tr>
+<tr><td>L5-6 FEZF2 NXPH2 CDH8</td><td>    839</td><td>0.06%</td></tr>
+<tr><td>L3-5 RORB GABRG1 PTPRO</td><td>    768</td><td>0.06%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>cell_type_plot_final</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Sin anotación</td><td>0</td><td>0%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>Excitatory Neurons</td><td>492395</td><td>36%</td></tr>
+<tr><td>Oligodendrocytes</td><td>239594</td><td>17.52%</td></tr>
+<tr><td>Inhibitory Neurons</td><td>192160</td><td>14.05%</td></tr>
+<tr><td>Astrocyte</td><td>167643</td><td>12.26%</td></tr>
+<tr><td>Unassigned</td><td> 91743</td><td>6.71%</td></tr>
+<tr><td>Endothelial</td><td> 66707</td><td>4.88%</td></tr>
+<tr><td>Microglia</td><td> 56876</td><td>4.16%</td></tr>
+<tr><td>OPCs</td><td> 49474</td><td>3.62%</td></tr>
+<tr><td>Fibroblast</td><td>  2515</td><td>0.18%</td></tr>
+<tr><td>Pericytes</td><td>  2086</td><td>0.15%</td></tr>
+<tr><td>Immune</td><td>  1876</td><td>0.14%</td></tr>
+<tr><td>Other/Unknown</td><td>  1491</td><td>0.11%</td></tr>
+<tr><td>Macrophages</td><td>  1375</td><td>0.1%</td></tr>
+<tr><td>SMC</td><td>   729</td><td>0.05%</td></tr>
+<tr><td>Monocytes</td><td>   481</td><td>0.04%</td></tr>
+<tr><td>Erythrocytes</td><td>   261</td><td>0.02%</td></tr>
+<tr><td>NK Cells</td><td>    80</td><td>0.01%</td></tr>
+<tr><td>CD8+ T Cells</td><td>    64</td><td>0%</td></tr>
+<tr><td>Neutrophils</td><td>    54</td><td>0%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>annotation_source</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Sin anotación</td><td>0</td><td>0%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>original</td><td>1131930</td><td>82.77%</td></tr>
+<tr><td>celltypist</td><td> 143931</td><td>10.52%</td></tr>
+<tr><td>unassigned</td><td>  91743</td><td>6.71%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>cell_type_keep_only</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>1,198,142</td><td>87.6%</td></tr>
+<tr><td>Sin anotación</td><td>169,462</td><td>12.4%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>Excitatory Neurons</td><td>492395</td><td>36%</td></tr>
+<tr><td>Oligodendrocytes</td><td>239594</td><td>17.52%</td></tr>
+<tr><td>Inhibitory Neurons</td><td>192160</td><td>14.05%</td></tr>
+<tr><td>NA</td><td>169462</td><td>12.39%</td></tr>
+<tr><td>Astrocyte</td><td>167643</td><td>12.26%</td></tr>
+<tr><td>Microglia</td><td> 56876</td><td>4.16%</td></tr>
+<tr><td>OPCs</td><td> 49474</td><td>3.62%</td></tr></tbody></table></div></div></div><h2>5. Anotación CellTypist</h2><div class="caja"><h3>Columna: <code>celltypist_label</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>235,674</td><td>17.2%</td></tr>
+<tr><td>Sin anotación</td><td>1,131,930</td><td>82.8%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>NA</td><td>1131930</td><td>82.77%</td></tr>
+<tr><td>Unassigned</td><td>  91743</td><td>6.71%</td></tr>
+<tr><td>Endo CLDN5 SLC7A5</td><td>  59501</td><td>4.35%</td></tr>
+<tr><td>L2-3 CUX2 ACVR1C THSD7A</td><td>  16246</td><td>1.19%</td></tr>
+<tr><td>Oligo MOG OPALIN</td><td>  13948</td><td>1.02%</td></tr>
+<tr><td>Astro AQP4 SLC1A2</td><td>   6692</td><td>0.49%</td></tr>
+<tr><td>L3-5 RORB MKX GRIN3A</td><td>   5669</td><td>0.41%</td></tr>
+<tr><td>OPC PDGFRA PCDH15</td><td>   5514</td><td>0.4%</td></tr>
+<tr><td>L6 OPRK1 THEMIS RGS6</td><td>   3866</td><td>0.28%</td></tr>
+<tr><td>InN PVALB HPSE</td><td>   2592</td><td>0.19%</td></tr>
+<tr><td>L2-3 CUX2 NTNG1 COL5A2</td><td>   2127</td><td>0.16%</td></tr>
+<tr><td>L3-5 RORB MKX DCC</td><td>   2093</td><td>0.15%</td></tr>
+<tr><td>Micro P2RY12 APBB1IP</td><td>   2016</td><td>0.15%</td></tr>
+<tr><td>L2-3 CUX2 NTNG1 PALMD</td><td>   1670</td><td>0.12%</td></tr>
+<tr><td>L2-4 CUX2 RORB CLMN</td><td>   1380</td><td>0.1%</td></tr>
+<tr><td>InN LAMP5 BMP7</td><td>   1290</td><td>0.09%</td></tr>
+<tr><td>InN VIP HS3ST3B1</td><td>   1231</td><td>0.09%</td></tr>
+<tr><td>Astro GFAP FABP7</td><td>   1114</td><td>0.08%</td></tr>
+<tr><td>InN PVALB ANOS1</td><td>    992</td><td>0.07%</td></tr>
+<tr><td>Macro F13A1 COLEC12</td><td>    982</td><td>0.07%</td></tr>
+<tr><td>Astro AQP4 OSMR</td><td>    978</td><td>0.07%</td></tr>
+<tr><td>PC P2RY14 GRM8</td><td>    913</td><td>0.07%</td></tr>
+<tr><td>InN SST FREM1</td><td>    901</td><td>0.07%</td></tr>
+<tr><td>L5-6 FEZF2 NXPH2 CDH8</td><td>    839</td><td>0.06%</td></tr>
+<tr><td>L3-5 RORB GABRG1 PTPRO</td><td>    768</td><td>0.06%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>celltypist_simple</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>235,674</td><td>17.2%</td></tr>
+<tr><td>Sin anotación</td><td>1,131,930</td><td>82.8%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>NA</td><td>1131930</td><td>82.77%</td></tr>
+<tr><td>Unassigned</td><td>  91743</td><td>6.71%</td></tr>
+<tr><td>Endothelial</td><td>  59711</td><td>4.37%</td></tr>
+<tr><td>Excitatory Neurons</td><td>  38360</td><td>2.8%</td></tr>
+<tr><td>Oligodendrocytes</td><td>  13948</td><td>1.02%</td></tr>
+<tr><td>Inhibitory Neurons</td><td>  11739</td><td>0.86%</td></tr>
+<tr><td>Astrocyte</td><td>   9153</td><td>0.67%</td></tr>
+<tr><td>OPCs</td><td>   5514</td><td>0.4%</td></tr>
+<tr><td>Microglia</td><td>   2139</td><td>0.16%</td></tr>
+<tr><td>Immune</td><td>   1876</td><td>0.14%</td></tr>
+<tr><td>Other/Unknown</td><td>   1491</td><td>0.11%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>celltypist_max_prob</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>235,674</td><td>17.2%</td></tr>
+<tr><td>Sin anotación</td><td>1,131,930</td><td>82.8%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>NA</td><td>1131930</td><td>82.77%</td></tr>
+<tr><td>1</td><td>     88</td><td>0.01%</td></tr>
+<tr><td>0.999999999999999</td><td>     32</td><td>0%</td></tr>
+<tr><td>0.999999999999998</td><td>     28</td><td>0%</td></tr>
+<tr><td>0.999999999999996</td><td>     21</td><td>0%</td></tr>
+<tr><td>0.99999999999999</td><td>     16</td><td>0%</td></tr>
+<tr><td>0.999999999999993</td><td>     16</td><td>0%</td></tr>
+<tr><td>0.999999999999997</td><td>     14</td><td>0%</td></tr>
+<tr><td>0.999999999999988</td><td>     12</td><td>0%</td></tr>
+<tr><td>0.99999999999998</td><td>      9</td><td>0%</td></tr>
+<tr><td>0.999999999999992</td><td>      8</td><td>0%</td></tr>
+<tr><td>0.999999999999995</td><td>      8</td><td>0%</td></tr>
+<tr><td>0.999999999999981</td><td>      7</td><td>0%</td></tr>
+<tr><td>0.999999999999985</td><td>      7</td><td>0%</td></tr>
+<tr><td>0.999999999999991</td><td>      7</td><td>0%</td></tr>
+<tr><td>0.999999999999994</td><td>      7</td><td>0%</td></tr>
+<tr><td>0.999999999999957</td><td>      6</td><td>0%</td></tr>
+<tr><td>0.999999999999958</td><td>      6</td><td>0%</td></tr>
+<tr><td>0.999999999999972</td><td>      6</td><td>0%</td></tr>
+<tr><td>0.999999999999983</td><td>      6</td><td>0%</td></tr>
+<tr><td>0.999999999999986</td><td>      6</td><td>0%</td></tr>
+<tr><td>0.999999999999987</td><td>      6</td><td>0%</td></tr>
+<tr><td>0.999999999999989</td><td>      6</td><td>0%</td></tr>
+<tr><td>0.999999999999933</td><td>      5</td><td>0%</td></tr>
+<tr><td>0.999999999999944</td><td>      5</td><td>0%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>celltypist_margin</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>235,674</td><td>17.2%</td></tr>
+<tr><td>Sin anotación</td><td>1,131,930</td><td>82.8%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>NA</td><td>1131930</td><td>82.77%</td></tr>
+<tr><td>1.68481541024113e-07</td><td>      1</td><td>0%</td></tr>
+<tr><td>3.25190390428054e-07</td><td>      1</td><td>0%</td></tr>
+<tr><td>1.06609765479666e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>1.65296880111007e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>2.17613119275761e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>2.74872374848075e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>2.94691478953599e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>3.84694635643251e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>3.93636506292733e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>4.56687561947028e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>5.26924208266166e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>6.69303166839219e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>7.10292143638047e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>7.1125897398547e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>7.75326221085296e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>8.05581055907459e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>8.89192721434395e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>8.93918142988795e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>9.02746226028039e-06</td><td>      1</td><td>0%</td></tr>
+<tr><td>1.01775586573011e-05</td><td>      1</td><td>0%</td></tr>
+<tr><td>1.06701223475877e-05</td><td>      1</td><td>0%</td></tr>
+<tr><td>1.14360938131969e-05</td><td>      1</td><td>0%</td></tr>
+<tr><td>1.33476357133885e-05</td><td>      1</td><td>0%</td></tr>
+<tr><td>1.3983176141711e-05</td><td>      1</td><td>0%</td></tr></tbody></table></div></div></div><div class="caja"><h3>Columna: <code>assigned_by_celltypist</code></h3><div class="grid2"><h4>Resumen</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Metrica</th><th>N</th><th>Pct</th></tr></thead><tbody><tr><td>Total células</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Con anotación</td><td>1,367,604</td><td>100%</td></tr>
+<tr><td>Sin anotación</td><td>0</td><td>0%</td></tr></tbody></table></div><h4>Top 25 tipos celulares</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Tipo_celular</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>FALSE</td><td>1223673</td><td>89.48%</td></tr>
+<tr><td>TRUE</td><td> 143931</td><td>10.52%</td></tr></tbody></table></div></div></div><h2>6. Cruce de Anotaciones</h2><div class="caja"><h4>Origen de la anotación por célula</h4><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Fuente</th><th>N_celulas</th><th>Porcentaje</th></tr></thead><tbody><tr><td>Ambas anotaciones</td><td> 235674</td><td>17.2%</td></tr>
+<tr><td>Solo canonica (BEYOND)</td><td>1131930</td><td>82.8%</td></tr></tbody></table></div></div><h2>7. Variables Clínicas Detectadas</h2>
+<div class="caja"><div style='overflow-x:auto'><table class='tabla'><thead><tr><th>Columna</th><th>Tipo</th><th>N_NA</th><th>Pct_NA</th></tr></thead><tbody><tr><td>sample</td><td>character</td><td>   0</td><td>0%</td></tr>
+<tr><td>libraryBatch</td><td>factor</td><td>   0</td><td>0%</td></tr>
+<tr><td>sample_id</td><td>character</td><td>   0</td><td>0%</td></tr>
+<tr><td>ceradsc</td><td>numeric</td><td>   0</td><td>0%</td></tr>
+<tr><td>braaksc</td><td>numeric</td><td>   0</td><td>0%</td></tr>
+<tr><td>pmi</td><td>numeric</td><td>4525</td><td>0.3%</td></tr></tbody></table></div></div>
+
+<hr><p style="color:#999;font-size:12px;">
+Generado con Rscript | 2026-05-07 15:57:54
+</p></body></html>
